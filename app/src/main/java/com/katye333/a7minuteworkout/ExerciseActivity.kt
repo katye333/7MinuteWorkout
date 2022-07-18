@@ -1,5 +1,7 @@
 package com.katye333.a7minuteworkout
 
+import android.media.MediaPlayer
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -8,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.katye333.a7minuteworkout.databinding.ActivityExerciseBinding
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -23,7 +26,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var exerciseList : ArrayList<ExerciseModel>? = null
     private var currentExercisePosition = -1
 
-    private var tts: TextToSpeech? = null
+    private var tts : TextToSpeech? = null
+    private var player : MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +54,20 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     private fun setupRestView() {
+
+        try {
+            // Play this sound once when the view is created
+            val soundURI = Uri.parse(
+                "android.resource://com.katye333.a7minuteworkout/" + R.raw.press_start)
+
+            player = MediaPlayer.create(applicationContext, soundURI)
+            player?.isLooping = false
+            player?.start()
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         binding?.flRestView?.visibility = View.VISIBLE
         binding?.tvTitle?.visibility = View.VISIBLE
 
@@ -65,7 +83,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             restProgress = 0
         }
 
-        speakOut("Rest")
+        // speakOut("Rest")
         binding?.tvUpcomingExerciseName?.text = exerciseList!![currentExercisePosition + 1].getName()
         setRestProgressBar()
     }
@@ -152,6 +170,11 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             tts!!.stop()
             tts!!.shutdown()
         }
+
+        if (player != null) {
+            player!!.stop()
+        }
+
         binding = null
     }
 
