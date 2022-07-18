@@ -9,25 +9,24 @@ import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.katye333.a7minuteworkout.databinding.ActivityExerciseBinding
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
-
     private var binding : ActivityExerciseBinding? = null
     private var restTimer : CountDownTimer? = null
     private var restProgress : Int = 0
-
     private var exerciseTimer : CountDownTimer? = null
     private var exerciseProgress : Int = 0
-
     private var exerciseList : ArrayList<ExerciseModel>? = null
     private var currentExercisePosition = -1
-
     private var tts : TextToSpeech? = null
     private var player : MediaPlayer? = null
+
+    private var exerciseAdapter : ExerciseStatusAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +50,17 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
 
         setupRestView()
+        setupExerciseStatusRecyclerView() // Call only once the exerciseList is not empty
+    }
+
+    private fun setupExerciseStatusRecyclerView() {
+        // set the layout manager
+        // assign value to adapter
+        binding?.rvExerciseStatus?.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        exerciseAdapter = ExerciseStatusAdapter(exerciseList!!)
+        binding?.rvExerciseStatus?.adapter = exerciseAdapter
     }
 
     private fun setupRestView() {
