@@ -8,9 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="colorPrimary">#B2212121</color>
+    <color name="colorPrimary">#2EBDCC</color>
     <color name="colorPrimaryDark">#B2212121</color>
-    <color name="colorAccent">#008F24</color>
+    <color name="colorAccent">#F7777E</color>
     <color name="lightGray">#c4c4c4</color>
     <color name="toolbar_color_control_normal">#000000</color>
 </resources>

@@ -8,28 +8,30 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:contentDescription="Start"
         android:id="@+id/myImageView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@drawable/img_main_page"
+        android:layout_height="400dp"
+        android:contentDescription="Start"
+        android:src="@drawable/logo"
+        app:layout_constraintBottom_toTopOf="@+id/flStart"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/flStart" />
+        tools:layout_editor_absoluteX="4dp" />
 
     <FrameLayout
         android:id="@+id/flStart"
-        app:layout_constraintTop_toBottomOf="@+id/myImageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background="@drawable/item_color_accent_border_ripple_background">
+        android:background="@drawable/item_color_accent_border_ripple_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myImageView">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="START"
             android:layout_gravity="center"
+            android:text="START"
             android:textColor="@color/colorPrimary"
             android:textSize="22sp"
             android:textStyle="bold" />
