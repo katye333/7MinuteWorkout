@@ -1,5 +1,6 @@
 package com.katye333.a7minuteworkout
 
+import android.app.Dialog
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
@@ -11,6 +12,7 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.katye333.a7minuteworkout.databinding.ActivityExerciseBinding
+import com.katye333.a7minuteworkout.databinding.DialogCustomBackConfirmationBinding
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
@@ -49,11 +51,33 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         // Create a back button within the toolbar
         binding?.toolbarExercise?.setNavigationOnClickListener {
-            onBackPressed()
+            customDialogForBackButton()
         }
 
         setupRestView()
         setupExerciseStatusRecyclerView() // Call only once the exerciseList is not empty
+    }
+
+    // super.onBackPressed() -- Would have closed the activity by default
+    override fun onBackPressed() {
+        customDialogForBackButton()
+    }
+
+    private fun customDialogForBackButton() {
+        val customDialog = Dialog(this)
+        val dialogBinding = DialogCustomBackConfirmationBinding.inflate(layoutInflater)
+        customDialog.setContentView(dialogBinding.root)
+        customDialog.setCanceledOnTouchOutside(false)
+
+        dialogBinding.btnYes.setOnClickListener {
+            this@ExerciseActivity.finish()
+            customDialog.dismiss()
+        }
+        dialogBinding.btnNo.setOnClickListener {
+            customDialog.dismiss()
+        }
+
+        customDialog.show()
     }
 
     private fun setupExerciseStatusRecyclerView() {
@@ -96,7 +120,6 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             restProgress = 0
         }
 
-        // speakOut("Rest")
         binding?.tvUpcomingExerciseName?.text = exerciseList!![currentExercisePosition + 1].getName()
         setRestProgressBar()
     }
