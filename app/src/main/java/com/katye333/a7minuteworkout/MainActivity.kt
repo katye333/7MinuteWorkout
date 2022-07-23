@@ -26,6 +26,16 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, BMIActivity::class.java)          // Navigate!
             startActivity(intent)
         }
+
+        binding?.flBMI?.setOnClickListener {
+            val intent = Intent(this, BMIActivity::class.java)          // Navigate!
+            startActivity(intent)
+        }
+
+        binding?.flHistory?.setOnClickListener {
+            val intent = Intent(this, HistoryActivity::class.java)          // Navigate!
+            startActivity(intent)
+        }
     }
 
     // Very Important to always set binding to null
