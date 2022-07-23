@@ -9,7 +9,13 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 class BMIActivity : AppCompatActivity() {
+    companion object {
+        private const val METRIC_UNITS_VIEW = "METRIC_UNIT_VIEW"
+        private const val US_UNITS_VIEW = "US_UNITS_VIEW"
+    }
+
     private var binding : ActivityBmiBinding? = null
+    private var currentVisibleView: String = METRIC_UNITS_VIEW
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +32,16 @@ class BMIActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        showMetricUnits() // Make US Units show by default
+        binding?.rgUnits?.setOnCheckedChangeListener { _, checkedId: Int ->
+            if (checkedId == R.id.rbMetricUnits) {
+                showMetricUnits()
+            }
+            else {
+                showUSUnits()
+            }
+        }
+
         binding?.btnCalculateUnits?.setOnClickListener {
             if (validateMetricUnits()) {
 
@@ -40,6 +56,41 @@ class BMIActivity : AppCompatActivity() {
                 Toast.makeText(this@BMIActivity, "Please enter valid values", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun showMetricUnits() {
+        currentVisibleView = METRIC_UNITS_VIEW
+        binding?.tilMetricUnitWeight?.visibility = View.VISIBLE
+        binding?.tilMetricUnitHeight?.visibility = View.VISIBLE
+
+        // hide us units
+        binding?.tilUsUnitWeightLBS?.visibility = View.INVISIBLE
+        binding?.tilUsUnitHeightFeet?.visibility = View.INVISIBLE
+        binding?.tilUsUnitHeightInch?.visibility = View.INVISIBLE
+
+        // clear inputs
+        binding?.etMetricUnitWeight?.text!!.clear()
+        binding?.etMetricUnitHeight?.text!!.clear()
+
+        binding?.llDisplayBMIResult?.visibility = View.INVISIBLE
+    }
+
+    private fun showUSUnits() {
+        currentVisibleView = US_UNITS_VIEW
+        binding?.tilUsUnitWeightLBS?.visibility = View.VISIBLE
+        binding?.tilUsUnitHeightFeet?.visibility = View.VISIBLE
+        binding?.tilUsUnitHeightInch?.visibility = View.VISIBLE
+
+        // hide metric units
+        binding?.tilMetricUnitWeight?.visibility = View.INVISIBLE
+        binding?.tilMetricUnitHeight?.visibility = View.INVISIBLE
+
+        // clear inputs
+        binding?.etUsUnitWeightLBS?.text!!.clear()
+        binding?.etUsUnitHeightFeet?.text!!.clear()
+        binding?.etUsUnitHeightInch?.text!!.clear()
+
+        binding?.llDisplayBMIResult?.visibility = View.INVISIBLE
     }
 
     private fun displayBMIResults(bmi: Float) {
@@ -91,6 +142,7 @@ class BMIActivity : AppCompatActivity() {
 
     private fun validateMetricUnits(): Boolean {
         var isValid = true
+
         if (binding?.etMetricUnitWeight?.text.toString().isEmpty()) {
             isValid = false
         }
